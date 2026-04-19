@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MK Global | Private Yield Management</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --navy: #050a14; --gold: #d4af37; --glass: rgba(255, 255, 255, 0.05);
+            --text: #f0f0f0; --border: rgba(212, 175, 55, 0.2); --success: #25D366;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--navy); color: var(--text); overflow-x: hidden; }
+
+        /* --- PROFESSIONAL LOGO --- */
+        .logo-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .crown-icon { 
+            width: 38px; height: 38px; background: var(--gold); 
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .crown-icon i { color: #000; font-size: 1rem; }
+        .logo-text { font-family: 'Montserrat', sans-serif; font-weight: 900; letter-spacing: 1px; font-size: 1.3rem; }
+        .logo-text span { color: var(--gold); }
+
+        /* --- NAVIGATION & TICKER --- */
+        nav { 
+            position: fixed; top: 0; width: 100%; height: 75px; 
+            background: rgba(0,0,0,0.95); display: flex; align-items: center; 
+            justify-content: space-between; padding: 0 20px; z-index: 1100;
+            border-bottom: 1px solid var(--border);
+        }
+        .ticker-zone { 
+            position: fixed; top: 75px; width: 100%; height: 45px; 
+            background: #000; z-index: 1050; border-bottom: 1px solid #222;
+        }
+
+        /* Essential Page Logic */
+        .page { display: none; min-height: 100vh; padding-top: 130px; padding-bottom: 50px; }
+        .active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- HERO --- */
+        header {
+            height: 75vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px;
+            background: linear-gradient(rgba(5, 10, 20, 0.8), rgba(5, 10, 20, 0.8)), 
+                        url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover; background-position: center;
+        }
+        .hero-title { font-size: clamp(2rem, 8vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
+        .hero-sub { color: var(--gold); font-weight: 600; font-size: 1.1rem; max-width: 600px; margin-bottom: 30px; }
+
+        /* --- ABOUT US --- */
+        .about-sec { padding: 60px 20px; max-width: 900px; margin: 0 auto; text-align: center; border-bottom: 1px solid var(--border); }
+        .about-sec p { color: #aaa; line-height: 1.8; font-size: 1.05rem; }
+
+        /* --- ROI NODES --- */
+        .tier-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 40px auto; padding: 20px; }
+        .card { 
+            background: var(--glass); border: 1px solid var(--border); border-radius: 20px; 
+            padding: 35px 20px; text-align: center; transition: 0.3s; position: relative;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .roi-val { font-size: 3rem; font-weight: 800; color: var(--gold); margin: 10px 0; }
+        .cycle-badge { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; }
+
+        /* --- BUTTONS & FORMS --- */
+        .btn { padding: 14px 28px; border-radius: 50px; font-weight: 800; cursor: pointer; border: none; transition: 0.2s; display: inline-block; text-decoration: none; }
+        .btn-gold { background: var(--gold); color: #000; }
+        .btn-outline { background: transparent; border: 2px solid #fff; color: #fff; }
+        
+        .form-box { max-width: 450px; margin: 0 auto; padding: 30px; background: #000; border: 1px solid var(--gold); border-radius: 25px; }
+        input { width: 100%; padding: 14px; margin: 10px 0; background: #111; border: 1px solid #333; color: #fff; border-radius: 10px; }
+
+        /* --- DASHBOARD --- */
+        .stat-card { background: var(--glass); padding: 20px; border-radius: 15px; border-left: 4px solid var(--gold); margin-bottom: 15px; }
+        .call-action { background: var(--success); color: #fff; width: 100%; text-align: center; font-size: 1.1rem; margin-top: 20px; }
+
+        footer { text-align: center; padding: 40px; color: #444; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-wrap" onclick="showPage('home')">
+            <div class="crown-icon"><i class="fas fa-crown"></i></div>
+            <div class="logo-text">MK <span>GLOBAL</span></div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button onclick="showPage('home')" class="btn" style="color:white; background:transparent; font-size:0.7rem;">HOME</button>
+            <button onclick="showPage('register')" class="btn btn-gold" style="padding: 8px 15px; font-size:0.7rem;">GET STARTED</button>
+        </div>
+    </nav>
+
+    <div class="ticker-zone">
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+            {
+                "symbols": [
+                    {"proName": "OANDA:XAUUSD", "title": "GOLD"},
+                    {"proName": "OANDA:XAGUSD", "title": "SILVER"},
+                    {"proName": "BINANCE:BTCUSDT", "title": "BTC"},
+                    {"proName": "BINANCE:ETHUSDT", "title": "ETH"}
+                ],
+                "colorTheme": "dark", "isTransparent": true, "displayMode": "adaptive", "locale": "en"
+            }
+            </script>
+        </div>
+    </div>
+
+    <section id="home" class="page active">
+        <header>
+            <h1 class="hero-title">Architecting<br>Your Wealth</h1>
+            <p class="hero-sub">WE UTILIZE INSTITUTIONAL STRATEGY AND ELITE EXPERIENCE TO MAXIMIZE EVERY DOLLAR INVESTED.</p>
+            <div style="display: flex; gap: 15px;">
+                <button onclick="showPage('nodes')" class="btn btn-gold">Explore Yield Nodes</button>
+                <button onclick="showPage('login')" class="btn btn-outline">Client Login</button>
+            </div>
+        </header>
+
+        <div class="about-sec">
+            <h2 style="color:var(--gold); margin-bottom:15px;">About Our Expertise</h2>
+            <p>At MK Global Investment, we pool resources and invest them with great experience and high-level strategies. Our mission is to generate high returns and consistent payback to our investors by accessing premium liquidity markets that are otherwise out of reach for individual traders.</p>
+        </div>
+    </section>
+
+    <section id="nodes" class="page">
+        <h2 style="text-align:center; color:var(--gold); font-size:2.2rem; margin-bottom:10px;">Investment Protocols</h2>
+        <div class="tier-container">
+            <div class="card">
+                <h3>Starter Alpha</h3>
+                <div class="roi-val">12%<small style="font-size:1rem; color:#666;">/Day</small></div>
+                <div class="cycle-badge">7-Day Settlement</div>
+                <p style="margin-top:15px;">$50 — $499</p>
+                <button onclick="showPage('register')" class="btn btn-gold" style="width:100%; margin-top:20px;">Activate</button>
+            </div>
+            <div class="card" style="border: 1px solid #fff;">
+                <h3>Growth Prime</h3>
+                <div class="roi-val">15%<small style="font-size:1rem; color:#666;">/Day</small></div>
+                <div class="cycle-badge">5-Day Settlement</div>
+                <p style="margin-top:15px;">$500 — $2,499</p>
+                <button onclick="showPage('register')" class="btn btn-gold" style="width:100%; margin-top:20px;">Activate</button>
+            </div>
+            <div class="card" style="border: 2px solid var(--gold);">
+                <div style="background:var(--gold); color:#000; position:absolute; top:0; left:0; width:100%; font-size:0.7rem; font-weight:800; padding:5px;">SUPER GREAT DEAL</div>
+                <h3>Elite Sentinel</h3>
+                <div class="roi-val">22%<small style="font-size:1rem; color:#666;">/Day</small></div>
+                <div class="cycle-badge">3-Day Settlement</div>
+                <p style="margin-top:15px;">$2,500 — $9,999</p>
+                <button onclick="showPage('register')" class="btn btn-gold" style="width:100%; margin-top:20px;">Activate</button>
+            </div>
+            <div class="card" style="border: 2px solid var(--success);">
+                <div style="background:var(--success); color:#000; position:absolute; top:0; left:0; width:100%; font-size:0.7rem; font-weight:800; padding:5px;">INSTITUTIONAL APEX</div>
+                <h3>Super Apex</h3>
+                <div class="roi-val">30%<small style="font-size:1rem; color:#666;">/Day</small></div>
+                <div class="cycle-badge">24-Hour Payback</div>
+                <p style="margin-top:15px;">$10,000 USDT +</p>
+                <button onclick="showPage('register')" class="btn btn-gold" style="width:100%; margin-top:20px;">Activate</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="register" class="page">
+        <div class="form-box">
+            <h2 style="text-align:center; color:var(--gold);">Registration</h2>
+            <input type="text" placeholder="Full Legal Name">
+            <input type="text" placeholder="Return TRC20 Address">
+            <input type="password" placeholder="Create Secure Password">
+            <button onclick="showPage('dashboard')" class="btn btn-gold" style="width:100%; margin-top:10px;">Create Account</button>
+            <p style="text-align:center; margin-top:15px; font-size:0.8rem; color:#888;">Already a client? <a href="#" onclick="showPage('login')" style="color:var(--gold);">Login</a></p>
+        </div>
+    </section>
+
+    <section id="login" class="page">
+        <div class="form-box">
+            <h2 style="text-align:center; color:var(--gold);">Client Login</h2>
+            <input type="text" placeholder="Username or Wallet Address">
+            <input type="password" placeholder="Secure Password">
+            <button onclick="showPage('dashboard')" class="btn btn-gold" style="width:100%; margin-top:10px;">Access Vault</button>
+            <p style="text-align:center; margin-top:15px; font-size:0.8rem; color:#888;">New investor? <a href="#" onclick="showPage('register')" style="color:var(--gold);">Create account</a></p>
+        </div>
+    </section>
+
+    <section id="dashboard" class="page">
+        <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div class="stat-card" style="text-align:center;">
+                <h3 style="color:var(--gold);">Identity Match: <span style="color:var(--success);">MATCHED</span></h3>
+                <p style="font-size:0.8rem; color:#888;">Portfolio Status: Validated</p>
+            </div>
+            
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <div class="stat-card">
+                    <p style="font-size:0.7rem; color:#888;">Current Balance</p>
+                    <h2>0.00 USDT</h2>
+                </div>
+                <div class="stat-card">
+                    <p style="font-size:0.7rem; color:#888;">Live ROI</p>
+                    <h2 style="color:var(--success);">+0.00%</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <p style="font-size:0.8rem; margin-bottom:10px;">Deposit Master Vault (TRC20):</p>
+                <div style="background:#000; padding:15px; border:1px dashed var(--gold); border-radius:10px; text-align:center;">
+                    <code id="vAddress" style="color:var(--gold); word-break:break-all;">TGx562yHEZ7MHzWrCpxVczmdagZbGanBRY</code>
+                </div>
+                <button onclick="copyAddr()" class="btn" style="width:100%; background:#222; color:#fff; margin-top:10px; font-size:0.8rem;">COPY ADDRESS</button>
+            </div>
+
+            <div style="margin-top:30px; text-align:center; border-top:1px solid #222; padding-top:20px;">
+                <p style="font-size:0.85rem; color:#aaa; margin-bottom:15px;">Contact support for activation or assistance:</p>
+                <a href="tel:+254707983903" class="btn btn-gold call-action">
+                    <i class="fas fa-phone-alt"></i> CALL +254 707 983 903
+                </a>
+                <p style="margin-top:10px; font-size:0.7rem; color:#555;">(Manual WhatsApp available via same number)</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 MK GLOBAL INVESTMENT. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(pageId);
+            if(target) {
+                target.classList.add('active');
+                window.scrollTo(0,0);
+            }
+        }
+        function copyAddr() {
+            const el = document.getElementById('vAddress').innerText;
+            navigator.clipboard.writeText(el).then(() => alert("Address Copied!"));
+        }
+        window.onload = () => showPage('home');
+    </script>
+</body>
+</html>
